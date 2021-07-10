@@ -1110,15 +1110,10 @@ EOT;
         $domain = '@' . 'fran' . $letter . 'ois.ch';
         $this->Mail->addAddress('test' . $domain);
         $this->Mail->addCC('test+cc' . $domain);
-        $this->Mail->addBCC('test+bcc' . $domain);
 
         //Queued addresses are not returned by get*Addresses() before send() call.
         self::assertEmpty($this->Mail->getToAddresses(), 'Bad "to" recipients');
         self::assertEmpty($this->Mail->getCcAddresses(), 'Bad "cc" recipients');
-        self::assertEmpty($this->Mail->getBccAddresses(), 'Bad "bcc" recipients');
-
-        //Clear queued BCC recipient.
-        $this->Mail->clearBCCs();
 
         $this->buildBody();
         self::assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
@@ -1135,7 +1130,6 @@ EOT;
             $this->Mail->getCcAddresses(),
             'Bad "cc" recipients'
         );
-        self::assertEmpty($this->Mail->getBccAddresses(), 'Bad "bcc" recipients');
     }
 
     /**
