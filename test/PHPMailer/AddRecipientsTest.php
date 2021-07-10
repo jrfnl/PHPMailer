@@ -23,6 +23,21 @@ final class AddRecipientsTest extends TestCase
 {
 
     /**
+     * Run before each test is started.
+     */
+    protected function set_up()
+    {
+        /*
+         * Only set "From", "to", "cc" or "bcc" should be set from within the individual tests
+         * in this class for the preSend() command to succeed.
+         */
+        $this->propertyChanges['From'] = 'unit_test@phpmailer.example.com';
+
+        // Initialize the PHPMailer class.
+        parent::set_up();
+    }
+
+    /**
      * Test addressing.
      */
     public function testAddressing()
@@ -80,7 +95,6 @@ final class AddRecipientsTest extends TestCase
         $b = $this->Mail->getSentMIMEMessage();
         self::assertTrue($this->Mail->addBCC('a@example.com'), 'BCC addressing failed');
         self::assertStringContainsString('To: Foo <foo@example.com>', $b);
-        self::assertTrue($this->Mail->send(), 'send failed');
     }
 
     /**
@@ -105,7 +119,7 @@ final class AddRecipientsTest extends TestCase
         self::assertEmpty($this->Mail->getCcAddresses(), 'Bad "cc" recipients');
 
         $this->buildBody();
-        self::assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
+        self::assertTrue($this->Mail->preSend(), $this->Mail->ErrorInfo);
 
         //Addresses with IDN are returned by get*Addresses() after send() call.
         $domain = $this->Mail->punyencodeAddress($domain);
@@ -143,7 +157,7 @@ final class AddRecipientsTest extends TestCase
         self::assertFalse($this->Mail->addAddress('test@XN--FRANOIS-XXA.CH'));
 
         $this->buildBody();
-        self::assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
+        self::assertTrue($this->Mail->preSend(), $this->Mail->ErrorInfo);
 
         //There should be only one "To" address and one "Reply-To" address.
         self::assertCount(
