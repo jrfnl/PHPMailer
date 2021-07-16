@@ -22,6 +22,7 @@ use PHPMailer\Test\SendTestCase;
  */
 final class PHPMailerTest extends SendTestCase
 {
+// CreateBody
     /**
      * Test low priority.
      */
@@ -36,6 +37,7 @@ final class PHPMailerTest extends SendTestCase
         self::assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
     }
 
+//encodeQP
     /**
      * Plain quoted-printable message.
      */
@@ -66,6 +68,7 @@ final class PHPMailerTest extends SendTestCase
         );
     }
 
+// encodeHeader
     /**
      * Test header encoding & folding.
      */
@@ -145,7 +148,7 @@ final class PHPMailerTest extends SendTestCase
             'Unencoded header value incorrect'
         );
     }
-
+// isHTML ?
     /**
      * Send an HTML message.
      */
@@ -174,7 +177,7 @@ EOT;
         $msg = $this->Mail->getSentMIMEMessage();
         self::assertStringNotContainsString("\r\n\r\nMIME-Version:", $msg, 'Incorrect MIME headers');
     }
-
+// SMTP
     /**
      * Send an HTML message specifying the DSN notifications we expect.
      */
@@ -201,7 +204,7 @@ EOT;
         $this->Mail->dsn = 'NEVER';
         self::assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
     }
-
+// setMessageType, createBody
     /**
      * createBody test of switch case
      */
