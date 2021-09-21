@@ -118,7 +118,7 @@ jobs:
           coverage: ${{ steps.set_cov.outputs.COV }}
           ini-values: sendmail_path=/usr/sbin/sendmail -t -i, error_reporting=E_ALL, display_errors=On
           extensions: imap, mbstring, intl, ctype, filter, hash
-          tools: phpunit-polyfills
+          tools: phpunit, phpunit-polyfills
 
       - name: Dump autoload
         run: composer dump-autoload --dev
